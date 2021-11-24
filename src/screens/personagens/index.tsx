@@ -18,19 +18,24 @@ export interface PersonagensProps {}
 
 export default function PersonagensScreen(props: PersonagensProps) {
   const nav = useNavigation();
+  // Largura e altura para ajustar os componentes
   const [dimension, setDimension] = React.useState([
     Dimensions.get("window").height,
     Dimensions.get("window").width,
   ]);
+  // armazenamento de todos os dados de cada personagem
   const [personagens, setPersonagens] = React.useState([
     { name: null, species: null, status: null, image: null },
   ]);
+  // informações gerais sobre a página
   const [informacoes, setInformacoes] = React.useState({
     pages: "?",
     prev: null,
     next: null,
   });
+  // definição da página ativa
   const [paginaAtual, setPaginaAtual] = React.useState(1);
+  // estado de carregamento dos dados
   const [carregando, setCarregando] = React.useState(true);
 
   /** Navega para a página inicial. */
@@ -101,7 +106,7 @@ export default function PersonagensScreen(props: PersonagensProps) {
       showAlert();
     }
   };
-
+  /** Carrega todas as informações. */
   React.useEffect(() => {
     (async () => {
       let json = await getPessonagens();
@@ -170,7 +175,7 @@ export default function PersonagensScreen(props: PersonagensProps) {
       <View style={styles.containerHorizontal}>
         <RectButton
           onPress={anterior}
-          //enabled={informacoes.prev}
+          enabled={informacoes.prev}
           style={styles.button}
         >
           <Text>PREV</Text>
@@ -180,7 +185,7 @@ export default function PersonagensScreen(props: PersonagensProps) {
         </RectButton>
         <RectButton
           onPress={proxima}
-          //enabled={informacoes.next}
+          enabled={informacoes.next}
           style={styles.button}
         >
           <Text>NEXT</Text>
