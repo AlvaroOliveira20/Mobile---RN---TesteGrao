@@ -8,16 +8,23 @@ import {
   Image,
   ActivityIndicator,
   Alert,
+  Dimensions,
 } from "react-native";
 //import {  } from "react-native-elements";
 import { RectButton, ScrollView } from "react-native-gesture-handler";
+import { SafeAreaView } from "react-native-safe-area-context";
 
 export interface PersonagensProps {}
 
 export default function PersonagensScreen(props: PersonagensProps) {
   const nav = useNavigation();
-
-  const [personagens, setPersonagens] = React.useState([]);
+  const [dimension, setDimension] = React.useState([
+    Dimensions.get("window").height,
+    Dimensions.get("window").width,
+  ]);
+  const [personagens, setPersonagens] = React.useState([
+    { name: null, species: null, status: null, image: null },
+  ]);
   const [informacoes, setInformacoes] = React.useState({
     pages: "?",
     prev: null,
@@ -105,11 +112,20 @@ export default function PersonagensScreen(props: PersonagensProps) {
   }, []);
 
   return (
-    <View style={styles.container}>
+    <SafeAreaView style={styles.container}>
       {carregando && (
-        <View style={styles.card}>
+        <View
+          style={[
+            styles.card,
+            {
+              width: dimension[1] * 0.9,
+              margin: dimension[1] * 0.05,
+              height: dimension[0] * 0.8,
+            },
+          ]}
+        >
           <View style={{ alignItems: "center", justifyContent: "center" }}>
-            <ActivityIndicator size={150}></ActivityIndicator>
+            <ActivityIndicator size={50} color={"#000"} />
             <Text style={[styles.text, { marginTop: 20, fontSize: 25 }]}>
               Carregando...
             </Text>
@@ -119,12 +135,20 @@ export default function PersonagensScreen(props: PersonagensProps) {
       {!carregando && (
         <ScrollView style={{ width: "100%" }}>
           <FlatList
-            keyExtractor={(item) => item.id}
             data={personagens}
             horizontal={true}
             pagingEnabled
             renderItem={({ item }) => (
-              <View style={styles.card}>
+              <View
+                style={[
+                  styles.card,
+                  {
+                    width: dimension[1] * 0.9,
+                    margin: dimension[1] * 0.05,
+                    height: dimension[0] * 0.8,
+                  },
+                ]}
+              >
                 <Image
                   style={styles.image}
                   source={{
@@ -146,7 +170,7 @@ export default function PersonagensScreen(props: PersonagensProps) {
       <View style={styles.containerHorizontal}>
         <RectButton
           onPress={anterior}
-          enabled={informacoes.prev}
+          //enabled={informacoes.prev}
           style={styles.button}
         >
           <Text>PREV</Text>
@@ -156,13 +180,13 @@ export default function PersonagensScreen(props: PersonagensProps) {
         </RectButton>
         <RectButton
           onPress={proxima}
-          enabled={informacoes.next}
+          //enabled={informacoes.next}
           style={styles.button}
         >
           <Text>NEXT</Text>
         </RectButton>
       </View>
-    </View>
+    </SafeAreaView>
   );
 }
 
@@ -183,6 +207,7 @@ const styles = StyleSheet.create({
   },
   button: {
     flex: 1,
+    marginHorizontal: 5,
     justifyContent: "center",
     alignItems: "center",
     padding: 5,
@@ -204,9 +229,6 @@ const styles = StyleSheet.create({
   card: {
     padding: 10,
     flex: 1,
-    margin: "5vw",
-    minHeight: "80vh",
-    minWidth: "90vw",
     borderRadius: 10,
     flexDirection: "column",
     backgroundColor: "#FFF",
@@ -215,12 +237,12 @@ const styles = StyleSheet.create({
     shadowColor: "#000",
     shadowOffset: {
       width: 0,
-      height: 5,
+      height: 1,
     },
     shadowOpacity: 0.58,
     shadowRadius: 16.0,
 
-    elevation: 24,
+    elevation: 5,
   },
   image: {
     minWidth: "100%",
