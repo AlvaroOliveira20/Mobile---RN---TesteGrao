@@ -173,23 +173,29 @@ export default function PersonagensScreen(props: PersonagensProps) {
         Página {paginaAtual} de {informacoes.pages}{" "}
       </Text>
       <View style={styles.containerHorizontal}>
-        <RectButton
-          onPress={anterior}
-          enabled={informacoes.prev}
-          style={styles.button}
-        >
-          <Text>PREV</Text>
-        </RectButton>
+        {informacoes.prev && (
+          <RectButton onPress={anterior} style={styles.button}>
+            <Text>PREV</Text>
+          </RectButton>
+        )}
+        {!informacoes.prev && (
+          <RectButton enabled={false} style={styles.buttonDisabled}>
+            <Text>PREV</Text>
+          </RectButton>
+        )}
         <RectButton onPress={navigateToHome} style={styles.button}>
           <Text>HOME</Text>
         </RectButton>
-        <RectButton
-          onPress={proxima}
-          enabled={informacoes.next}
-          style={styles.button}
-        >
-          <Text>NEXT</Text>
-        </RectButton>
+        {informacoes.next && (
+          <RectButton onPress={proxima} style={styles.button}>
+            <Text>NEXT</Text>
+          </RectButton>
+        )}
+        {!informacoes.next && (
+          <RectButton enabled={false} style={styles.buttonDisabled}>
+            <Text>NEXT</Text>
+          </RectButton>
+        )}
       </View>
     </SafeAreaView>
   );
@@ -220,6 +226,27 @@ const styles = StyleSheet.create({
     borderStyle: "solid",
     borderWidth: 4,
     backgroundColor: "#fff",
+    borderRadius: 10,
+    shadowColor: "#000",
+    shadowOffset: {
+      width: 0,
+      height: 1,
+    },
+    shadowOpacity: 0.58,
+    shadowRadius: 1.0,
+
+    elevation: 2,
+  },
+  buttonDisabled: {
+    flex: 1,
+    marginHorizontal: 5,
+    justifyContent: "center",
+    alignItems: "center",
+    padding: 5,
+    borderColor: "rgba(200,200,200,0.2)",
+    borderStyle: "solid",
+    borderWidth: 4,
+    backgroundColor: "rgba(255,255,255,0.2)",
     borderRadius: 10,
     shadowColor: "#000",
     shadowOffset: {
